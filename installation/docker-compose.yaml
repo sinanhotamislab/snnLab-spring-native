@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: snnLab
+      MONGO_INITDB_ROOT_PASSWORD: snnLab
+      MONGO_INITDB_DATABASE: snnLab
+    volumes:
+      - ./docker-entrypoint-initdb.d/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    ports:
+      - 27017:27017
+  redis:
+    image: 'redis'
+    ports:
+      - '127.0.0.1:6379:6379/tcp'
+    healthcheck:
+      test: redis-cli ping
+      interval: 3s
+      timeout: 5s
+      retries: 5
+  redisinsight:
+    image: 'redislabs/redisinsight:latest'
+    ports:
+      - '127.0.0.1:8001:8001'
